@@ -220,11 +220,11 @@ public class EnergyConsumeController {
         map.put("rows",list);
         return map;
     }
-
-    @RequestMapping("/export")
-
+    
+    //使用POI导出Excel表格
+    @RequestMapping（“/ export”）
     public  void reportExport(){
-        //创建HSSFWorkbook对象(excel的文档对象)
+        //创建HSSFWorkbook对象(excel的文档对象//
         HSSFWorkbook wb = new HSSFWorkbook();
         //设置字体样式，大小
         HSSFFont font = wb.createFont();
