@@ -11,9 +11,7 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.UUID;
 
-/**
- * Created by Administrator on 2018/11/5.
- */
+
 @WebServlet(name = "FileUploadUtil",urlPatterns = "/FileUploadUtil")
 public class FileUploadUtil extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
