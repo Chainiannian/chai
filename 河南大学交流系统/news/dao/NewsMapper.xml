@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.qhit.news.dao.INewsDao"> 
+	<!-- 自定义结果集 --> 
+	<resultMap id="BaseResultMap" type="com.qhit.news.pojo.News"> 
+		<id property="news" column="news" javaType="java.lang.Integer"></id> 
+		<result property="newsTime" column="news_time" javaType="java.lang.String"></result> 
+		<result property="newsTheme" column="news_theme" javaType="java.lang.String"></result> 
+		<result property="newsContent" column="news_content" javaType="java.lang.String"></result>
+		<result property="newsImage" column="news_image" javaType="java.lang.String"></result>
+	</resultMap> 
+
+	<!-- 在各种标签中，id属性必须与接口中的方法名一样，id的值必须是唯一的，parameterType指查询时使用的参数类型， 
+	resultType属性指明查询返回的结果集类型    --> 
+ 
+	<sql id="Base_Column_List" > 
+		news,news_time,news_theme,news_content,news_image
+	</sql> 
+	<select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Integer" > 
+		select 
+		<include refid="Base_Column_List" /> 
+		from news 
+		where news = #{news} 
+	</select> 
+	<delete id="delete" parameterType="java.lang.Integer" > 
+		delete from news 
+		where news = #{news} 
+	</delete> 
+	<insert id="insert" parameterType="com.qhit.news.pojo.News" > 
+		insert into news(news_time,news_theme,news_content,news_image) 
+		values (#{newsTime},#{newsTheme},#{newsContent},#{newsImage}) 
+	</insert> 
+	<update id="updateSelective" parameterType="com.qhit.news.pojo.News" > 
+		update news 
+		<set > 
+			<if test="newsTime != null and newsTime!='' " > 
+				news_time = #{newsTime}, 
+			</if> 
+			<if test="newsTheme != null and newsTheme!='' " > 
+				news_theme = #{newsTheme}, 
+			</if> 
+			<if test="newsContent != null and newsContent!='' " > 
+				news_content = #{newsContent}, 
+			</if> 
+			<if test="newsImage != null and newsImage!='' " > 
+				news_image = #{newsImage}, 
+			</if> 
+		</set> 
+		where news = #{news} 
+	</update> 
+	<update id="update" parameterType="com.qhit.news.pojo.News" > 
+		update news 
+		set  news_time = #{newsTime}, news_theme = #{newsTheme}, news_content = #{newsContent}, news_image = #{newsImage} 
+		where news = #{news} 
+	</update> 
+	<select id="findAll" resultMap="BaseResultMap" > 
+		select 
+		<include refid="Base_Column_List" /> 
+		from news 
+	</select> 
+	<select id="findByNewsTime" resultMap="BaseResultMap" parameterType="java.lang.String" > 
+		select 
+		<include refid="Base_Column_List" /> 
+		from news 
+		where news_time = #{newsTime} 
+	</select> 
+	<select id="findByNewsTheme" resultMap="BaseResultMap" parameterType="java.lang.String" > 
+		select 
+		<include refid="Base_Column_List" /> 
+		from news 
+		where news_theme = #{newsTheme} 
+	</select>
+	<select id="findByNewsImage" resultMap="BaseResultMap" parameterType="java.lang.String" > 
+		select 
+		<include refid="Base_Column_List" /> 
+		from news 
+		where news_image = #{newsImage} 
+	</select> 
+	<delete id="deleteBatch" parameterType="java.util.Arrays"> 
+		delete from news where news in 
+		<foreach collection="array" item="id" open="(" close=")" separator=","> 
+			#{id} 
+		</foreach> 
+	</delete> 
+	<select id="search" parameterType="com.qhit.news.pojo.News" resultMap="BaseResultMap"> 
+		select * from  news 
+		<where > 
+			<if test="newsTime != null and newsTime!='' " > 
+				 and news_time = #{newsTime} 
+			</if> 
+			<if test="newsTheme != null and newsTheme!='' " > 
+				 and news_theme = #{newsTheme} 
+			</if> 
+			<if test="newsContent != null and newsContent!='' " > 
+				 and news_content = #{newsContent} 
+			</if> 
+			<if test="newsImage != null and newsImage!='' " > 
+				 and news_image = #{newsImage} 
+			</if> 
+		</where> 
+	</select> 
+</mapper> 
